@@ -1,3 +1,7 @@
+import 'dart:math';
+
+import 'package:jogo/src/resultado.dart';
+
 const pedra = "Pedra";
 const papel = "Papel";
 const tesoura = "Tesoura";
@@ -18,6 +22,21 @@ class Partida {
     }
     regras[vencedor]![acao] = perdedor;
   }
+
+  Resultado iniciar({required String humano}) {
+    final pc = escolherPC();
+    if (humano == pc) {
+      return Resultado(ResultadoType.empate, "$humano empata com $pc");
+    }
+    if (regras[humano]!.containsValue(pc)) {
+      final entry = regras[humano]!.entries.firstWhere((e) => e.value == pc);
+      return Resultado(
+          ResultadoType.vitoria, "$humano ${entry.key} ${entry.value}");
+    }
+
+    final entry = regras[pc]!.entries.firstWhere((e) => e.value == humano);
+    return Resultado(ResultadoType.derrota, "$pc ${entry.key} ${entry.value}");
+  }
 }
 
 Partida configurarPartida() {
@@ -32,4 +51,9 @@ Partida configurarPartida() {
     ..criarRegra(vencedor: lagarto, acao: "come", perdedor: papel)
     ..criarRegra(vencedor: spock, acao: "esmaga", perdedor: tesoura)
     ..criarRegra(vencedor: spock, acao: "vaporiza", perdedor: pedra);
+}
+
+String escolherPC() {
+  final index = Random().nextInt(5);
+  return opcoes[index];
 }
