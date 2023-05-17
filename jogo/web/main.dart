@@ -2,7 +2,6 @@ import 'dart:html';
 import 'package:jogo/src/partida.dart';
 import 'package:jogo/src/resultado.dart';
 
-typedef EventListener(Event event);
 late DivElement divOpcoes;
 late DivElement divResultado;
 bool jogando = true;
